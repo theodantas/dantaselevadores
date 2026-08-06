@@ -16,7 +16,7 @@
   --white:        #faf9f7;
   --amber:        #ffb400;
 
-  --font-display: 'Archivo Black', sans-serif;
+  --font-display: sans-serif;
   --font-body:    'Barlow', sans-serif;
   --font-mono:    'IBM Plex Mono', monospace;
 
@@ -175,12 +175,6 @@ ul{ list-style:none; }
   padding:calc(var(--header-h) + 40px) 32px 80px;
   max-width:1240px; margin:0 auto;
   overflow:hidden;
-}
-.hero-watermark{
-  position:absolute; right:6%; top:50%; transform:translateY(-50%);
-  width:min(30vw, 380px);
-  opacity:.07; filter:grayscale(1);
-  pointer-events:none; user-select:none;
 }
 .floor-display{
   display:flex; align-items:center; gap:14px; margin-bottom:36px;
