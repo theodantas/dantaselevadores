@@ -16,7 +16,7 @@
   --white:        #faf9f7;
   --amber:        #ffb400;
 
-  --font-display: sans-serif;
+  --font-display: 'Archivo Black', sans-serif;
   --font-body:    'Barlow', sans-serif;
   --font-mono:    'IBM Plex Mono', monospace;
 
@@ -33,6 +33,15 @@ body{
   line-height:1.5;
   overflow-x:hidden;
   cursor:none;
+}
+/* impede que palavras longas sem espaço (e-mails, telefones) estourem a largura da tela */
+.hero-title, .credentials-copy h2, .services-head h2, .contact-form h2,
+.panel-title, .info-value, .crea-number{
+  overflow-wrap:anywhere;
+}
+/* garante que itens de grid/flex possam encolher abaixo do tamanho do conteúdo */
+.contact-inner, .contact-form, .contact-info, .credentials-inner, .credentials-copy{
+  min-width:0;
 }
 img{ max-width:100%; display:block; }
 a{ color:inherit; text-decoration:none; }
@@ -280,7 +289,7 @@ ul{ list-style:none; }
 .panel-title{
   font-family:var(--font-body); font-weight:700; font-size:1.15rem;
 }
-.panel-desc{ color:var(--red); font-size:.95rem; }
+.panel-desc{ color:var(--steel); font-size:.95rem; }
 @media (max-width: 900px){
   .panel-grid{ grid-template-columns:repeat(2,1fr); }
   .panel-btn--wide{ grid-column:span 2; }
@@ -329,7 +338,8 @@ ul{ list-style:none; }
   text-transform:uppercase; color:rgba(255,255,255,.75);
 }
 .info-value{
-  font-family:var(--font-display); font-weight:400; font-size:1.5rem;
+  font-family:var(--font-display); font-weight:400;
+  font-size:clamp(1.05rem, 5.2vw, 1.5rem);
   transition:opacity .2s;
 }
 .info-value--static{ font-family:var(--font-body); font-weight:700; font-size:1.15rem; }
@@ -345,4 +355,11 @@ a.info-value:hover{ opacity:.75; }
   background:var(--black); color:var(--steel-light);
   text-align:center; padding:26px 20px;
   font-family:var(--font-mono); font-size:12px; letter-spacing:.03em;
+}
+
+/* ---------- rail clearance override (must come last to win the cascade) ---------- */
+/* enquanto o trilho está visível (>980px), dá mais respiro à esquerda do conteúdo
+   para o texto não ficar colado/por cima da animação do elevador */
+@media (min-width: 981px){
+  .hero, .credentials, .services, .contact{ padding-left:96px; }
 }
