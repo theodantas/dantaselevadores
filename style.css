@@ -32,8 +32,11 @@ body{
   font-family:var(--font-body);
   line-height:1.5;
   overflow-x:hidden;
-  cursor:none;
 }
+/* o cursor nativo só some depois que o cursor customizado está de fato
+   posicionado (ver script.js) — evita ficar sem nenhum ponteiro visível
+   entre o carregamento da página e o primeiro movimento do mouse */
+body.cursor-ready{ cursor:none; }
 /* impede que palavras longas sem espaço (e-mails, telefones) estourem a largura da tela */
 .hero-title, .credentials-copy h2, .services-head h2, .contact-form h2,
 .panel-title, .info-value, .crea-number{
@@ -58,7 +61,10 @@ ul{ list-style:none; }
   border-radius:50%;
   transform:translate(-50%,-50%);
   will-change:transform;
+  opacity:0;
+  transition:opacity .2s;
 }
+.cursor-dot.is-active, .cursor-ring.is-active{ opacity:1; }
 .cursor-dot{
   width:6px; height:6px; background:var(--red);
   transition:opacity .2s;
@@ -93,7 +99,10 @@ ul{ list-style:none; }
   background:var(--red);
   transform:translate(-50%,0);
   transition:top .12s linear;
-  box-shadow:0 0 0 3px rgba(226,36,26,.15);
+  /* anel de contraste em duas camadas: funciona sobre fundo branco, preto OU vermelho */
+  box-shadow:
+    0 0 0 3px var(--white),
+    0 0 0 5px rgba(28,28,30,.4);
 }
 .rail-floor{
   position:absolute; left:50%; top:calc(var(--pos) * 33.333%);
@@ -297,6 +306,51 @@ ul{ list-style:none; }
 @media (max-width: 600px){
   .panel-grid{ grid-template-columns:1fr; }
   .panel-btn--wide{ grid-column:span 1; }
+}
+
+/* ---------- empresas parceiras (carrossel) ---------- */
+.partners{
+  padding:64px 32px;
+  border-top:1px solid rgba(28,28,30,.08);
+  border-bottom:1px solid rgba(28,28,30,.08);
+}
+.partners-head{
+  max-width:1240px; margin:0 auto 32px;
+  text-align:center;
+}
+.partners-head .eyebrow{ margin-bottom:6px; }
+.partners-head p{ color:var(--steel); font-size:.95rem; }
+.partners-viewport{
+  max-width:1240px; margin:0 auto;
+  overflow:hidden;
+  padding:14px 0; /* evita que o hover (translateY) seja cortado pelo overflow:hidden */
+  -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+          mask-image:linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+}
+.partners-track{
+  display:flex; align-items:center; gap:28px;
+  width:max-content;
+  animation:partners-scroll var(--partners-duration, 28s) linear infinite;
+}
+.partners-viewport:hover .partners-track{ animation-play-state:paused; }
+@keyframes partners-scroll{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
+}
+.partner-chip{
+  flex:0 0 auto;
+  display:flex; align-items:center; justify-content:center;
+  width:84px; height:84px;
+  border-radius:14px;
+  background:var(--grey-panel);
+  border:1.5px solid transparent;
+  opacity:.75; filter:grayscale(1);
+  transition:opacity .25s var(--ease), filter .25s var(--ease), border-color .25s var(--ease), transform .25s var(--ease);
+}
+.partner-chip:hover{ opacity:1; filter:grayscale(0); border-color:var(--red); transform:translateY(-2px); }
+.partner-chip img{ height:60%; width:60%; object-fit:contain; }
+@media (prefers-reduced-motion: reduce){
+  .partners-track{ animation:none; flex-wrap:wrap; justify-content:center; }
 }
 
 /* ---------- contact ---------- */
